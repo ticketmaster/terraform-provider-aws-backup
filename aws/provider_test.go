@@ -76,6 +76,23 @@ func testAccPreCheck(t *testing.T) {
 	}
 }
 
+func testAccAwsAlternateAccountPreCheck(t *testing.T) {
+	if v := os.Getenv("AWS_ACCESS_KEY_ID_ALTERNATE"); v == "" {
+		t.Skip("AWS_ACCESS_KEY_ID_ALTERNATE must be set for this acceptance test")
+	}
+	if v := os.Getenv("AWS_SECRET_ACCESS_KEY_ALTERNATE"); v == "" {
+		t.Skip("AWS_SECRET_ACCESS_KEY_ALTERNATE must be set for this acceptance test")
+	}
+}
+
+var testAccAwsAlternateAccountProviderConfig = fmt.Sprintf(`
+provider "aws" {
+  access_key = "%[1]s"
+  alias      = "alternate"
+  secret_key = "%[2]s"
+}
+`, os.Getenv("AWS_ACCESS_KEY_ID_ALTERNATE"), os.Getenv("AWS_SECRET_ACCESS_KEY_ALTERNATE"))
+
 func testAccGetRegion() string {
 	v := os.Getenv("AWS_DEFAULT_REGION")
 	if v == "" {
@@ -114,6 +131,45 @@ func testAccMultipleRegionsPreCheck(t *testing.T) {
 		if len(partition.Regions()) < 2 {
 			t.Skip("skipping tests; partition only includes a single region")
 		}
+	}
+}
+
+func testAccAwsAccountProviderFunc(accountID string, providers *[]*schema.Provider) func() *schema.Provider {
+	return func() *schema.Provider {
+		if accountID == "" {
+			log.Println("[DEBUG] No account ID given")
+			return nil
+		}
+		if providers == nil {
+			log.Println("[DEBUG] No providers given")
+			return nil
+		}
+
+		log.Printf("[DEBUG] Checking providers for AWS account ID: %s", accountID)
+		for _, provider := range *providers {
+			// Ignore if Meta is empty, this can happen for validation providers
+			if provider == nil || provider.Meta() == nil {
+				log.Printf("[DEBUG] Skipping empty provider")
+				continue
+			}
+
+			// Ignore if Meta is not AWSClient, this will happen for other providers
+			client, ok := provider.Meta().(*AWSClient)
+			if !ok {
+				log.Printf("[DEBUG] Skipping non-AWS provider")
+				continue
+			}
+
+			clientAccountID := client.accountid
+			log.Printf("[DEBUG] Checking AWS provider account ID %q against %q", clientAccountID, accountID)
+			if clientAccountID == accountID {
+				log.Printf("[DEBUG] Found AWS provider with region: %s", accountID)
+				return provider
+			}
+		}
+
+		log.Printf("[DEBUG] No suitable provider found for %q in %d providers", accountID, len(*providers))
+		return nil
 	}
 }
 
