@@ -461,10 +461,8 @@ provider "aws" {
 
 data "aws_ami" "amzn-ami-minimal-pv" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-pv-*"]
@@ -491,10 +489,8 @@ resource "aws_eip" "bar" {
 const testAccAWSEIPInstanceConfig = `
 data "aws_ami" "amzn-ami-minimal-pv" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-pv-*"]
@@ -518,10 +514,8 @@ resource "aws_eip" "bar" {
 const testAccAWSEIPInstanceConfig2 = `
 data "aws_ami" "amzn-ami-minimal-pv" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-pv-*"]
@@ -545,10 +539,8 @@ resource "aws_eip" "bar" {
 const testAccAWSEIPInstanceConfig_associated = `
 data "aws_ami" "amzn-ami-minimal-hvm" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-hvm-*"]
@@ -623,10 +615,8 @@ resource "aws_eip" "bar" {
 const testAccAWSEIPInstanceConfig_associated_switch = `
 data "aws_ami" "amzn-ami-minimal-hvm" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-hvm-*"]
@@ -787,10 +777,8 @@ variable "server_count" {
 
 data "aws_ami" "amzn-ami-minimal-pv" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-pv-*"]
@@ -864,10 +852,8 @@ resource "aws_route_table_association" "us-east-1b-public" {
 const testAccAWSEIPAssociate_not_associated = `
 data "aws_ami" "amzn-ami-minimal-pv" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-pv-*"]
@@ -890,10 +876,8 @@ resource "aws_eip" "bar" {
 const testAccAWSEIPAssociate_associated = `
 data "aws_ami" "amzn-ami-minimal-pv" {
   most_recent = true
-  filter {
-    name = "owner-alias"
-    values = ["amazon"]
-  }
+  owners      = ["amazon"]
+
   filter {
     name = "name"
     values = ["amzn-ami-minimal-pv-*"]
