@@ -19,7 +19,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/hcl2 v0.0.0-20181001210626-3e4b7e0eb20e // indirect
 	github.com/hashicorp/logutils v1.0.0 // indirect
-	github.com/hashicorp/terraform v0.11.9-beta1.0.20181018181219-c98f2087fb7b
+	github.com/hashicorp/terraform v0.11.9-beta1.0.20181019001201-17b883f59258
 	github.com/hashicorp/vault v0.11.3
 	github.com/hashicorp/yamux v0.0.0-20181012175058-2f1d1f20f75d // indirect
 	github.com/jen20/awspolicyequivalence v1.0.0
